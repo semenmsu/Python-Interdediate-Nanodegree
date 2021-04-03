@@ -52,11 +52,7 @@ class MemeEngine:
         x, y = random.randint(0, int(width/4)), \
             random.randint(0, int(height/1.4))
         x2, y2 = x, y + 45
-        #draw = ImageDraw.Draw(img)
-        #draw.text((x, y), body, (255, 255, 255), font=font)
-        #draw.text((x2, y2), f"  -{author}", (255, 255, 255), font=font2)
         fit_text(img, f"{body} \n -{author}", (255,255,255), font)
-        #fit_text(img, f"  -{author}", (255,255,255), font2)
         new_meme_path = os.path.join(self.tempdir,
                                      "img-"+str(randint(0, 1e10))+".jpg")
         img.save(new_meme_path)
