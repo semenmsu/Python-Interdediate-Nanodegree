@@ -17,10 +17,14 @@ optionally lists all of that NEO's known close approaches:
 The `query` subcommand searches for close approaches that match given criteria:
 
     $ python3 main.py query --date 1969-07-29
-    $ python3 main.py query --start-date 2020-01-01 --end-date 2020-01-31 --max-distance 0.025
-    $ python3 main.py query --start-date 2050-01-01 --min-distance 0.2 --min-velocity 50
-    $ python3 main.py query --date 2020-03-14 --max-velocity 25 --min-diameter 0.5 --hazardous
-    $ python3 main.py query --start-date 2000-01-01 --max-diameter 0.1 --not-hazardous
+    $ python3 main.py query --start-date 2020-01-01 --end-date 2020-01-31
+    --max-distance 0.025
+    $ python3 main.py query --start-date 2050-01-01 --min-distance 0.2
+    --min-velocity 50
+    $ python3 main.py query --date 2020-03-14 --max-velocity 25
+    --min-diameter 0.5 --hazardous
+    $ python3 main.py query --start-date 2000-01-01 --max-diameter 0.1
+    --not-hazardous
     $ python3 main.py query --hazardous --max-distance 0.05 --min-velocity 30
 
 The set of results can be limited in size and/or saved to an output file in CSV
@@ -30,8 +34,9 @@ or JSON format:
     $ python3 main.py query --limit 15 --outfile results.json
 
 The `interactive` subcommand loads the NEO database and spawns an interactive
-command shell that can repeatedly execute `inspect` and `query` commands without
-having to wait to reload the database each time. However, it doesn't hot-reload.
+command shell that can repeatedly execute `inspect` and `query` commands
+without having to wait to reload the database each time. However, it doesn't
+hot-reload.
 
 If needed, the script can load data from data files other than the default with
 `--neofile` or `--cadfile`.
@@ -54,7 +59,8 @@ from write import write_to_csv, write_to_json
 PROJECT_ROOT = pathlib.Path(__file__).parent.resolve()
 DATA_ROOT = PROJECT_ROOT / 'data'
 
-# The current time, for use with the kill-on-change feature of the interactive shell.
+# The current time, for use with the kill-on-change feature of
+# the interactive shell.
 _START = time.time()
 
 
@@ -70,7 +76,8 @@ def date_fromisoformat(date_string):
     try:
         return datetime.datetime.strptime(date_string, '%Y-%m-%d').date()
     except ValueError:
-        raise argparse.ArgumentTypeError(f"'{date_string}' is not a valid date. Use YYYY-MM-DD.")
+        raise argparse.ArgumentTypeError(f"'{date_string}' is not a \
+            valid date. Use YYYY-MM-DD.")
 
 
 def make_parser():
@@ -79,7 +86,8 @@ def make_parser():
     :return: A tuple of the top-level, inspect, and query parsers.
     """
     parser = argparse.ArgumentParser(
-        description="Explore past and future close approaches of near-Earth objects."
+        description="Explore past and future close approaches of \
+            near-Earth objects."
     )
 
     # Add arguments for custom data files.
@@ -93,22 +101,26 @@ def make_parser():
 
     # Add the `inspect` subcommand parser.
     inspect = subparsers.add_parser('inspect',
-                                    description="Inspect an NEO by primary designation or by name.")
+                                    description="Inspect an NEO by primary\
+                                         designation or by name.")
     inspect.add_argument('-v', '--verbose', action='store_true',
-                         help="Additionally, print all known close approaches of this NEO.")
+                         help="Additionally, print all known close \
+                             approaches of this NEO.")
     inspect_id = inspect.add_mutually_exclusive_group(required=True)
     inspect_id.add_argument('-p', '--pdes',
-                            help="The primary designation of the NEO to inspect (e.g. '433').")
+                            help="The primary designation of the NEO \
+                                to inspect (e.g. '433').")
     inspect_id.add_argument('-n', '--name',
-                            help="The IAU name of the NEO to inspect (e.g. 'Halley').")
+                            help="The IAU name of the NEO to \
+                                inspect (e.g. 'Halley').")
 
     # Add the `query` subcommand parser.
     query = subparsers.add_parser('query',
-                                  description="Query for close approaches that "
-                                              "match a collection of filters.")
+                                  description="Query for close approaches "
+                                  "that match a collection of filters.")
     filters = query.add_argument_group('Filters',
-                                       description="Filter close approaches by their attributes "
-                                                   "or the attributes of their NEOs.")
+                                       description="Filter close approaches by their
+                                        "attributes or the attributes of their NEOs.")
     filters.add_argument('-d', '--date', type=date_fromisoformat,
                          help="Only return close approaches on the given date, "
                               "in YYYY-MM-DD format (e.g. 2020-12-31).")

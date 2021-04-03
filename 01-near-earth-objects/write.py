@@ -26,7 +26,6 @@ def write_to_csv(results, filename):
     :param filename: A Path-like object pointing to where the data should be saved.
     """
     fieldnames = ('datetime_utc', 'distance_au', 'velocity_km_s', 'designation', 'name', 'diameter_km', 'potentially_hazardous')
-    # TODO: Write the results to a CSV file, following the specification in the instructions.
     with open(filename, 'w') as csvfile:
         writer = csv.writer(csvfile, delimiter=',')
         writer.writerow(list(fieldnames))
@@ -51,19 +50,7 @@ def write_to_json(results, filename):
     :param results: An iterable of `CloseApproach` objects.
     :param filename: A Path-like object pointing to where the data should be saved.
     """
-    # TODO: Write the results to a JSON file, following the specification in the instructions.
-    '''
-    {
-    "datetime_utc": "2025-11-30 02:18",
-    "distance_au": 0.397647483265833,
-    "velocity_km_s": 3.72885069167641,
-    "neo": {
-      "designation": "433",
-      "name": "Eros",
-      "diameter_km": 16.84,
-      "potentially_hazardous": false
-    }
-    '''
+
     data = []
     for approach in results:
         datetime_utc = datetime_to_str(approach.time)
